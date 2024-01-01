@@ -1,2 +1,8 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
+require("xx")
+print("hello")
+
+require("lazy").setup({
+  "folke/which-key.nvim",
+  { "folke/neoconf.nvim", cmd = "Neoconf" },
+  "folke/neodev.nvim",
+})
