@@ -1,3 +1,4 @@
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -18,4 +19,3 @@ vim.o.smartcase = true
 -- Update time
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
-
