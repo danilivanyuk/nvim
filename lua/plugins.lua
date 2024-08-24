@@ -1,5 +1,6 @@
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
+--
 --  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
@@ -71,7 +72,7 @@ require('lazy').setup({
           return vim.fn.executable 'make' == 1
         end,
       },
-      { 'nvim-telescope/telescope-file-browser.nvim'},
+      { 'nvim-telescope/telescope-file-browser.nvim' },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
@@ -140,9 +141,9 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { "isort", "black", stop_after_first = true  },
+        python = { 'isort', 'black', stop_after_first = true },
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -267,131 +268,113 @@ require('lazy').setup({
     dependencies = { 'hrsh7th/nvim-cmp' },
   },
   {
-    "nvim-tree/nvim-tree.lua",
-    version = "*",
+    'nvim-tree/nvim-tree.lua',
+    version = '*',
     lazy = false,
     dependencies = {
-        "nvim-tree/nvim-web-devicons",
+      'nvim-tree/nvim-web-devicons',
     },
-   },
-   {
-		"smjonas/inc-rename.nvim",
-		cmd = "IncRename",
-		keys = {
-			{
-				"<leader>rn",
-				function()
-					return ":IncRename " .. vim.fn.expand("<cword>")
-				end,
-				desc = "Incremental rename",
-				mode = "n",
-				noremap = true,
-				expr = true,
-			},
-		},
-		config = true,
-	},
+  },
+  {
+    'smjonas/inc-rename.nvim',
+    cmd = 'IncRename',
+    keys = {
+      {
+        '<leader>rn',
+        function()
+          return ':IncRename ' .. vim.fn.expand '<cword>'
+        end,
+        desc = 'Incremental rename',
+        mode = 'n',
+        noremap = true,
+        expr = true,
+      },
+    },
+    config = true,
+  },
 
-	-- Refactoring tool
-	{
-		"ThePrimeagen/refactoring.nvim",
-		keys = {
-			{
-				"<leader>r",
-				function()
-					require("refactoring").select_refactor({
-						show_success_message = true,
-					})
-				end,
-				mode = "v",
-				noremap = true,
-				silent = true,
-				expr = false,
-			},
-		},
-		opts = {},
-	},
+  -- Refactoring tool
+  {
+    'ThePrimeagen/refactoring.nvim',
+    keys = {
+      {
+        '<leader>r',
+        function()
+          require('refactoring').select_refactor {
+            show_success_message = true,
+          }
+        end,
+        mode = 'v',
+        noremap = true,
+        silent = true,
+        expr = false,
+      },
+    },
+    opts = {},
+  },
 
-	{
-		"nvimdev/dashboard-nvim",
-		enabled = false,
-	},
-	{
-		"nvim-lualine/lualine.nvim",
-		enabled = false,
-	},
-	{
-		"rcarriga/nvim-notify",
-		opts = {
-			timeout = 3000,
-			background_colour = "#000000",
-			render = "wrapped-compact",
-		},
-	},
+  {
+    'nvimdev/dashboard-nvim',
+    enabled = false,
+  },
+  {
+    'nvim-lualine/lualine.nvim',
+    enabled = false,
+  },
+  {
+    'rcarriga/nvim-notify',
+    opts = {
+      timeout = 3000,
+      background_colour = '#000000',
+      render = 'wrapped-compact',
+    },
+  },
 
-	-- buffer line
-	{
-		"akinsho/bufferline.nvim",
-		event = "VeryLazy",
-		keys = {
-			{ "<Tab>", "<Cmd>BufferLineCycleNext<CR>", desc = "Next tab" },
-			{ "<S-Tab>", "<Cmd>BufferLineCyclePrev<CR>", desc = "Prev tab" },
-		},
-		opts = {
-			options = {
-				mode = "tabs",
-				show_buffer_close_icons = false,
-				show_close_icon = false,
-			},
-		},
-	},
-
-	-- filename
-	{
-		"b0o/incline.nvim",
-		dependencies = {},
-		event = "BufReadPre",
-		priority = 1200,
-		config = function()
-			local helpers = require("incline.helpers")
-			require("incline").setup({
-				window = {
-					padding = 0,
-					margin = { horizontal = 0 },
-				},
-				render = function(props)
-					local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-					local ft_icon, ft_color = require("nvim-web-devicons").get_icon_color(filename)
-					local modified = vim.bo[props.buf].modified
-					local buffer = {
-						ft_icon and { " ", ft_icon, " ", guibg = ft_color, guifg = helpers.contrast_color(ft_color) }
-							or "",
-						" ",
-						{ filename, gui = modified and "bold,italic" or "bold" },
-						" ",
-						guibg = "#363944",
-					}
-					return buffer
-				end,
-			})
-		end,
-	},
-	-- LazyGit integration with Telescope
-	{
-		"kdheepak/lazygit.nvim",
-		keys = {
-			{
-				";c",
-				":LazyGit<Return>",
-				silent = true,
-				noremap = true,
-			},
-		},
-		-- optional for floating window border decoration
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-	},
+  -- filename
+  {
+    'b0o/incline.nvim',
+    dependencies = {},
+    event = 'BufReadPre',
+    priority = 1200,
+    config = function()
+      local helpers = require 'incline.helpers'
+      require('incline').setup {
+        window = {
+          padding = 0,
+          margin = { horizontal = 0 },
+        },
+        render = function(props)
+          local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ':t')
+          local ft_icon, ft_color = require('nvim-web-devicons').get_icon_color(filename)
+          local modified = vim.bo[props.buf].modified
+          local buffer = {
+            ft_icon and { ' ', ft_icon, ' ', guibg = ft_color, guifg = helpers.contrast_color(ft_color) } or '',
+            ' ',
+            { filename, gui = modified and 'bold,italic' or 'bold' },
+            ' ',
+            guibg = '#363944',
+          }
+          return buffer
+        end,
+      }
+    end,
+  },
+  -- LazyGit integration with Telescope
+  {
+    'kdheepak/lazygit.nvim',
+    keys = {
+      {
+        ';c',
+        ':LazyGit<Return>',
+        silent = true,
+        noremap = true,
+      },
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+  },
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
