@@ -31,11 +31,42 @@ require('lazy').setup({
     'lewis6991/gitsigns.nvim',
     opts = {
       signs = {
-        add = { text = '+' },
-        change = { text = '~' },
+        add = { text = '┃' },
+        change = { text = '┃' },
         delete = { text = '_' },
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
+        untracked = { text = '┆' },
+      },
+      signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+      numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
+      linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+      word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+      watch_gitdir = {
+        follow_files = true,
+      },
+      auto_attach = true,
+      attach_to_untracked = false,
+      current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+        delay = 1000,
+        ignore_whitespace = false,
+        virt_text_priority = 100,
+      },
+      current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
+      sign_priority = 6,
+      update_debounce = 100,
+      status_formatter = nil, -- Use default
+      max_file_length = 40000, -- Disable if file is longer than this (in lines)
+      preview_config = {
+        -- Options passed to nvim_open_win
+        border = 'single',
+        style = 'minimal',
+        relative = 'cursor',
+        row = 0,
+        col = 1,
       },
     },
   },
@@ -44,17 +75,59 @@ require('lazy').setup({
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
+    keys = {
+      {
+        '<leader>c',
+        function()
+          require('which-key').show { global = false }
+        end,
+        desc = '[C]ode',
+      },
+      {
+        '<leader>d',
+        function()
+          require('which-key').show { global = false }
+        end,
+        desc = '[D]ocument',
+      },
+      {
+        '<leader>r',
+        function()
+          require('which-key').show { global = false }
+        end,
+        desc = '[R]ename',
+      },
+      {
+        '<leader>s',
+        function()
+          require('which-key').show { global = false }
+        end,
+        desc = '[S]earch',
+      },
+      {
+        '<leader>w',
+        function()
+          require('which-key').show { global = false }
+        end,
+        desc = '[W]orkspace',
+      },
+      {
+        '<leader>t',
+        function()
+          require('which-key').show { global = false }
+        end,
+        desc = '[T]oggle',
+      },
+      {
+        '<leader>h',
+        function()
+          require('which-key').show { global = false }
+        end,
+        desc = 'Git [H]unk',
+      },
+    },
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup()
-      require('which-key').add {
-        { '<leader>c', group = '[C]ode' },
-        { '<leader>d', group = '[D]ocument' },
-        { '<leader>r', group = '[R]ename' },
-        { '<leader>s', group = '[S]earch' },
-        { '<leader>w', group = '[W]orkspace' },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
-      }
     end,
   },
 
@@ -192,14 +265,22 @@ require('lazy').setup({
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
+    -- 'scottmckendry/cyberdream.nvim',
+    -- lazy = false,
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       vim.cmd.colorscheme 'tokyonight-night'
-
+      -- vim.cmd.colorscheme 'cyberdream'
       -- You can configure highlights by doing something like:
+      vim.cmd [[
+        highlight Normal guibg=none
+        highlight NonText guibg=none
+        highlight Normal ctermbg=none
+        highlight NonText ctermbg=none
+      ]]
       vim.cmd.hi 'Comment gui=none'
     end,
   },
@@ -362,25 +443,23 @@ require('lazy').setup({
   -- LazyGit integration with Telescope
   {
     'kdheepak/lazygit.nvim',
-    keys = {
-      {
-        ';c',
-        ':LazyGit<Return>',
-        silent = true,
-        noremap = true,
-      },
+    cmd = {
+      'LazyGit',
+      'LazyGitConfig',
+      'LazyGitCurrentFile',
+      'LazyGitFilter',
+      'LazyGitFilterCurrentFile',
     },
     -- optional for floating window border decoration
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+      { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+    },
   },
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {
